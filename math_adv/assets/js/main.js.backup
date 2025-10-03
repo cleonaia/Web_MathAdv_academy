@@ -1,0 +1,660 @@
+// ===== MATH ADVANTAGE - SCIENTIFIC JAVASCRIPT ===== //
+
+// Enhanced Scientific Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    
+    // Navbar Scroll Effect
+    const navbar = document.querySelector('.navbar');
+    
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 50) {
+            navbar.classList.add('navbar-scrolled');
+        } else {
+            navbar.classList.remove('navbar-scrolled');
+        }
+    });
+
+    // Enhanced Mathematical Symbols Animation
+    createFloatingMathSymbols();
+    
+    // Smooth Scrolling
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+
+    // Form Enhancement
+    enhanceFormInteractions();
+    
+    // Scientific Particles Animation
+    createScientificParticles();
+    
+    // Initialize Mathematical Effects
+    initMathematicalEffects();
+    
+    // Portal Functions
+    initPortalFunctions();
+    
+    console.log('🔬 Math Advantage Scientific Platform Initialized');
+});
+
+// Advanced Mathematical Symbols Creation
+function createFloatingMathSymbols() {
+    const container = document.querySelector('.hero-section');
+    if (!container) return;
+    
+    const symbols = ['∑', '∫', 'π', '∞', '∂', 'Δ', 'α', 'β', 'θ', 'x²', '√', '≤'];
+    
+    symbols.forEach((symbol, index) => {
+        const symbolEl = document.createElement('div');
+        symbolEl.className = 'math-symbols floating-symbol';
+        symbolEl.textContent = symbol;
+        symbolEl.style.cssText = `
+            position: absolute;
+            font-size: ${Math.random() * 2 + 1.5}rem;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.15);
+            animation: float ${Math.random() * 4 + 4}s ease-in-out infinite;
+            animation-delay: ${Math.random() * 2}s;
+            top: ${Math.random() * 80 + 10}%;
+            left: ${Math.random() * 80 + 10}%;
+            pointer-events: none;
+            user-select: none;
+        `;
+        container.appendChild(symbolEl);
+    });
+}
+
+// Scientific Particles System
+function createScientificParticles() {
+    const particleContainer = document.body;
+    
+    setInterval(() => {
+        if (document.querySelectorAll('.scientific-particle').length < 10) {
+            const particle = document.createElement('div');
+            particle.className = 'scientific-particle';
+            particle.style.cssText = `
+                position: fixed;
+                width: ${Math.random() * 4 + 2}px;
+                height: ${Math.random() * 4 + 2}px;
+                background: rgba(139, 92, 246, ${Math.random() * 0.5 + 0.3});
+                border-radius: 50%;
+                left: ${Math.random() * 100}vw;
+                top: 100vh;
+                animation: particleFloat ${Math.random() * 10 + 8}s linear forwards;
+                pointer-events: none;
+                z-index: 1;
+            `;
+            
+            particleContainer.appendChild(particle);
+            
+            // Remove particle after animation
+            setTimeout(() => {
+                if (particle.parentNode) {
+                    particle.parentNode.removeChild(particle);
+                }
+            }, 18000);
+        }
+    }, 2000);
+}
+
+// Mathematical Effects Initialization
+function initMathematicalEffects() {
+    // Animated Counter for Statistics
+    const counters = document.querySelectorAll('.scientific-stats h3');
+    
+    const observerOptions = {
+        threshold: 0.5,
+        rootMargin: '0px'
+    };
+    
+    const counterObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                animateCounter(entry.target);
+                counterObserver.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+    
+    counters.forEach(counter => {
+        counterObserver.observe(counter);
+    });
+}
+
+// Counter Animation
+function animateCounter(element) {
+    const text = element.textContent;
+    const number = parseInt(text.replace(/\D/g, ''));
+    const suffix = text.replace(/\d/g, '');
+    const duration = 2000;
+    const step = number / (duration / 16);
+    let current = 0;
+    
+    const timer = setInterval(() => {
+        current += step;
+        if (current >= number) {
+            element.textContent = number + suffix;
+            clearInterval(timer);
+        } else {
+            element.textContent = Math.floor(current) + suffix;
+        }
+    }, 16);
+}
+
+// Enhanced Form Interactions
+function enhanceFormInteractions() {
+    const form = document.getElementById('inscripcioForm');
+    if (!form) return;
+    
+    const inputs = form.querySelectorAll('input, textarea, select');
+    
+    inputs.forEach(input => {
+        input.addEventListener('focus', function() {
+            createInputParticles(this);
+        });
+        
+        // Real-time validation
+        input.addEventListener('input', function() {
+            validateField(this);
+        });
+    });
+    
+    // Form submission with scientific animation
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        if (validateForm()) {
+            showSubmissionAnimation();
+            setTimeout(() => {
+                // Here you would normally submit the form
+                showSuccessMessage();
+            }, 2000);
+        }
+    });
+}
+
+// Input Field Particles
+function createInputParticles(input) {
+    const rect = input.getBoundingClientRect();
+    
+    for (let i = 0; i < 5; i++) {
+        const particle = document.createElement('div');
+        particle.style.cssText = `
+            position: fixed;
+            width: 3px;
+            height: 3px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            left: ${rect.left + Math.random() * rect.width}px;
+            top: ${rect.top + Math.random() * rect.height}px;
+            animation: inputParticle 1s ease-out forwards;
+            pointer-events: none;
+            z-index: 1000;
+        `;
+        
+        document.body.appendChild(particle);
+        
+        setTimeout(() => {
+            if (particle.parentNode) {
+                particle.parentNode.removeChild(particle);
+            }
+        }, 1000);
+    }
+}
+
+// Field Validation
+function validateField(field) {
+    const value = field.value.trim();
+    const type = field.type;
+    let isValid = true;
+    
+    // Remove existing validation classes
+    field.classList.remove('is-valid', 'is-invalid');
+    
+    // Check if required field is empty
+    if (field.required && !value) {
+        isValid = false;
+    }
+    
+    // Email validation
+    if (type === 'email' && value) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(value)) {
+            isValid = false;
+        }
+    }
+    
+    // Phone validation
+    if (type === 'tel' && value) {
+        const phoneRegex = /^[0-9\s\+\-\(\)]{9,}$/;
+        if (!phoneRegex.test(value)) {
+            isValid = false;
+        }
+    }
+    
+    // Apply validation class
+    field.classList.add(isValid ? 'is-valid' : 'is-invalid');
+    
+    return isValid;
+}
+
+// Form Validation
+function validateForm() {
+    const form = document.getElementById('inscripcioForm');
+    const requiredFields = form.querySelectorAll('[required]');
+    let isValid = true;
+    
+    requiredFields.forEach(field => {
+        if (!validateField(field)) {
+            isValid = false;
+        }
+    });
+    
+    return isValid;
+}
+
+// Submission Animation
+function showSubmissionAnimation() {
+    const overlay = document.createElement('div');
+    overlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(139, 92, 246, 0.9);
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        animation: overlayFadeIn 0.5s ease-out;
+    `;
+    
+    const loader = document.createElement('div');
+    loader.innerHTML = `
+        <div class="scientific-loader">
+            <div class="atom-loader">
+                <div class="nucleus"></div>
+                <div class="electron electron-1"></div>
+                <div class="electron electron-2"></div>
+                <div class="electron electron-3"></div>
+            </div>
+            <p style="color: white; margin-top: 2rem; font-size: 1.2rem;">Processant sol·licitud...</p>
+        </div>
+    `;
+    
+    overlay.appendChild(loader);
+    document.body.appendChild(overlay);
+    
+    return overlay;
+}
+
+// Success Message
+function showSuccessMessage() {
+    const overlay = document.querySelector('[style*="rgba(139, 92, 246, 0.9)"]');
+    if (overlay) {
+        overlay.innerHTML = `
+            <div style="text-align: center; color: white;">
+                <div style="font-size: 4rem; margin-bottom: 1rem;">✓</div>
+                <h2>Sol·licitud Enviada!</h2>
+                <p>Rebràs una resposta aviat. Gràcies per confiar en Math Advantage.</p>
+                <button onclick="this.parentElement.parentElement.remove()" 
+                        style="margin-top: 2rem; padding: 1rem 2rem; background: white; color: var(--primary-color); border: none; border-radius: 10px; cursor: pointer; font-weight: bold;">
+                    Tancar
+                </button>
+            </div>
+        `;
+    }
+}
+
+// Portal Functions
+function initPortalFunctions() {
+    window.openStudentPortal = function() {
+        showPortalModal('Alumnes', 'student');
+    };
+    
+    window.openFamilyPortal = function() {
+        showPortalModal('Famílies', 'family');
+    };
+    
+    window.openTeacherPortal = function() {
+        showPortalModal('Docents', 'teacher');
+    };
+    
+    window.openAdminPortal = function() {
+        showPortalModal('Administració', 'admin');
+    };
+}
+
+// Portal Modal
+function showPortalModal(type, portal) {
+    const modal = document.createElement('div');
+    modal.className = 'modal fade show';
+    modal.style.cssText = 'display: block; background: rgba(0,0,0,0.5);';
+    
+    const colors = {
+        student: 'var(--primary-color)',
+        family: '#059669',
+        teacher: 'var(--physics-blue)',
+        admin: 'var(--geometry-gold)'
+    };
+    
+    modal.innerHTML = `
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content" style="border-radius: 20px; overflow: hidden;">
+                <div class="modal-header" style="background: ${colors[portal]}; color: white; border: none;">
+                    <h5 class="modal-title">
+                        <i class="fas fa-${getPortalIcon(portal)} me-2"></i>
+                        Portal ${type}
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" onclick="this.closest('.modal').remove()"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="text-center mb-4">
+                        <div class="portal-demo-icon" style="width: 100px; height: 100px; background: ${colors[portal]}; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; color: white; font-size: 2rem;">
+                            <i class="fas fa-${getPortalIcon(portal)}"></i>
+                        </div>
+                        <h4 class="mt-3">Accés al Portal ${type}</h4>
+                        <p class="text-muted">Introdueix les teves credencials per accedir</p>
+                    </div>
+                    
+                    <form>
+                        <div class="mb-3">
+                            <label class="form-label">Usuari</label>
+                            <input type="text" class="form-control" placeholder="Nom d'usuari o email">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Contrasenya</label>
+                            <input type="password" class="form-control" placeholder="Contrasenya">
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="remember">
+                            <label class="form-check-label" for="remember">
+                                Recordar-me
+                            </label>
+                        </div>
+                        <button type="button" class="btn w-100" style="background: ${colors[portal]}; color: white; font-weight: bold;" onclick="simulateLogin('${type}')">
+                            <i class="fas fa-sign-in-alt me-2"></i>Iniciar Sessió
+                        </button>
+                    </form>
+                    
+                    <hr class="my-4">
+                    
+                    <div class="text-center">
+                        <small class="text-muted">
+                            Credencials de demostració:<br>
+                            Usuari: <code>demo</code> | Contrasenya: <code>demo123</code>
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+}
+
+// Portal Icons
+function getPortalIcon(portal) {
+    const icons = {
+        student: 'user-graduate',
+        family: 'users',
+        teacher: 'chalkboard-teacher',
+        admin: 'cogs'
+    };
+    return icons[portal];
+}
+
+// Simulate Login
+function simulateLogin(type) {
+    const modal = document.querySelector('.modal');
+    const modalBody = modal.querySelector('.modal-body');
+    
+    modalBody.innerHTML = `
+        <div class="text-center">
+            <div class="spinner-border text-primary mb-3" role="status"></div>
+            <h5>Accedint al Portal ${type}...</h5>
+            <p class="text-muted">Carregant dashboard personalitzat</p>
+        </div>
+    `;
+    
+    setTimeout(() => {
+        modalBody.innerHTML = `
+            <div class="text-center">
+                <div class="text-success mb-3" style="font-size: 3rem;">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h4 class="text-success">Accés Correcte!</h4>
+                <p>Benvingut/da al Portal ${type}</p>
+                <p class="text-muted">En un entorn real, ara es carregaria el dashboard complet amb totes les funcionalitats.</p>
+                <button class="btn btn-primary" onclick="this.closest('.modal').remove()">
+                    <i class="fas fa-home me-2"></i>Tancar Demo
+                </button>
+            </div>
+        `;
+    }, 2000);
+}
+
+// Scientific Chatbot
+let chatMessages = [];
+let isTyping = false;
+
+window.toggleChatbot = function() {
+    const chatbot = document.getElementById('chatbot');
+    const button = document.getElementById('chatbot-button');
+    
+    if (chatbot.style.display === 'none' || !chatbot.style.display) {
+        chatbot.style.display = 'block';
+        chatbot.style.animation = 'chatbotSlideIn 0.5s ease-out';
+        button.style.transform = 'scale(0.9)';
+    } else {
+        chatbot.style.animation = 'chatbotSlideOut 0.3s ease-in';
+        setTimeout(() => {
+            chatbot.style.display = 'none';
+        }, 300);
+        button.style.transform = 'scale(1)';
+    }
+};
+
+window.sendMessage = function() {
+    const input = document.getElementById('chat-input');
+    const message = input.value.trim();
+    
+    if (!message || isTyping) return;
+    
+    // Add user message
+    addChatMessage(message, 'user');
+    input.value = '';
+    
+    // Simulate bot typing
+    isTyping = true;
+    setTimeout(() => {
+        const response = generateBotResponse(message);
+        addChatMessage(response, 'bot');
+        isTyping = false;
+    }, 1000 + Math.random() * 2000);
+};
+
+// Handle Enter key in chat
+document.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter' && e.target.id === 'chat-input') {
+        sendMessage();
+    }
+});
+
+function addChatMessage(message, sender) {
+    const messagesContainer = document.getElementById('chat-messages');
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${sender}-message mb-2`;
+    
+    if (sender === 'user') {
+        messageDiv.innerHTML = `
+            <small class="text-muted text-end d-block">Tu</small>
+            <div class="bg-primary text-white p-3 rounded-3 ms-auto" style="max-width: 80%;">
+                ${message}
+            </div>
+        `;
+    } else {
+        messageDiv.innerHTML = `
+            <small class="text-muted">Dr. Pythagoras ∫AI</small>
+            <div class="bg-light p-3 rounded-3" style="border-left: 4px solid var(--primary-color);">
+                <strong>🔬</strong> ${message}
+            </div>
+        `;
+    }
+    
+    messagesContainer.appendChild(messageDiv);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+function generateBotResponse(message) {
+    const responses = [
+        "Excel·lent pregunta! Les matemàtiques són la clau per comprendre l'univers. En què puc ajudar-te més específicament? 📐∑",
+        "Interessant! Aquesta qüestió conecta amb diversos camps científics. Vols que aprofundeixem en algun aspecte particular? 🔬⚗️",
+        "Perfecte! Aquesta pregunta té una resposta fascinant des del punt de vista científic. Deixa'm explicar-te... 🧬∫",
+        "Magnífic! Aquest tema és fonamental en matemàtiques aplicades. Et puc oferir diversos enfocaments... 📊π",
+        "Molt bona observació! Això ens porta a conceptes avançats de física i química. Vols més detalls? ⚛️∞"
+    ];
+    
+    return responses[Math.floor(Math.random() * responses.length)];
+}
+
+// Add CSS animations for particles and effects
+const additionalStyles = `
+    @keyframes inputParticle {
+        0% {
+            opacity: 1;
+            transform: scale(1) translateY(0);
+        }
+        100% {
+            opacity: 0;
+            transform: scale(0.3) translateY(-50px);
+        }
+    }
+    
+    @keyframes particleFloat {
+        0% {
+            transform: translateY(0) translateX(0) rotate(0deg);
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(-100vh) translateX(50px) rotate(360deg);
+            opacity: 0;
+        }
+    }
+    
+    @keyframes chatbotSlideIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px) scale(0.8);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+    
+    @keyframes chatbotSlideOut {
+        from {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        to {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+    }
+    
+    .is-valid {
+        border-color: #059669 !important;
+        box-shadow: 0 0 0 0.2rem rgba(5, 150, 105, 0.25) !important;
+    }
+    
+    .is-invalid {
+        border-color: #dc3545 !important;
+        box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25) !important;
+    }
+    
+    .scientific-loader {
+        text-align: center;
+    }
+    
+    .atom-loader {
+        position: relative;
+        width: 100px;
+        height: 100px;
+        margin: 0 auto;
+    }
+    
+    .nucleus {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 20px;
+        height: 20px;
+        background: white;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        animation: nucleusPulse 1s ease-in-out infinite;
+    }
+    
+    .electron {
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background: #fbbf24;
+        border-radius: 50%;
+        animation: electronOrbit 2s linear infinite;
+    }
+    
+    .electron-1 {
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .electron-2 {
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        animation-delay: 0.67s;
+    }
+    
+    .electron-3 {
+        bottom: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        animation-delay: 1.33s;
+    }
+    
+    @keyframes nucleusPulse {
+        0%, 100% { transform: translate(-50%, -50%) scale(1); }
+        50% { transform: translate(-50%, -50%) scale(1.2); }
+    }
+    
+    @keyframes electronOrbit {
+        from { transform: rotate(0deg) translateX(40px) rotate(0deg); }
+        to { transform: rotate(360deg) translateX(40px) rotate(-360deg); }
+    }
+    
+    @keyframes overlayFadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+`;
+
+// Inject additional styles
+const styleElement = document.createElement('style');
+styleElement.textContent = additionalStyles;
+document.head.appendChild(styleElement);
+
+console.log('✨ Math Advantage Scientific Platform Ready! ∑∫π∞');
